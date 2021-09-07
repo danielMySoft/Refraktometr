@@ -49,12 +49,27 @@ void fir(uint32_t *inp, uint32_t *outp, const uint8_t len)
 {
 	memset((uint8_t*)outp, 0, 4*NUM_PIX);
 
-	for(uint16_t i=len-1; i<REAL_PIX_NUM; i++)
+	uint32_t tmp=0;
+	for(uint8_t i=0; i<(len-1)/2; i++){
+		tmp = 0;
+		for(uint8_t j=0; j<=i+(len-1)/2; j++)
+			tmp += inp[j];
+		outp[i] = tmp/(i+1+(len-1)/2);
+	}
+
+	for(uint16_t i=(len-1)/2; i<=NUM_PIX-1-(len-1)/2; i++)
 	{
-		uint32_t tmp=0;
-		for(uint8_t j=0; j<len; j++)
-			tmp+=inp[i-j];
+		tmp = 0;
+		for(int8_t j=-(len-1)/2; j<=(len-1)/2; j++)
+			tmp+=inp[i+i];
 		outp[i]=tmp/len;
+	}
+
+	for(uint16_t i=NUM_PIX-(len-1)/2; i<NUM_PIX; i++){
+		tmp = 0;
+		for(uint16_t j=i-(len-1)/2; j<NUM_PIX; j++)
+			tmp += inp[j];
+		outp[i] = tmp/(NUM_PIX-i+(len-1)/2);
 	}
 }
 

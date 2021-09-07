@@ -286,6 +286,8 @@ int main(void)
 		  for(uint16_t j=0; j<NUM_PIX; j++)
 			  ccd_avg[j]+=ccd[j];
 	  }
+	  for(uint16_t j=0; j<NUM_PIX; j++)
+		  ccd_avg[j] = ccd_avg[j]/AVG_LINES;
 
 	  meas.temp=DS_GetTemp()+cal_data.temp_corr;
 
