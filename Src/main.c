@@ -78,9 +78,9 @@ volatile uint8_t ccd_read_req			=0;		//czy chcemy odczytac linijke z CCD?
 volatile uint16_t ccd_pix_num			=0;		//numer odczytywanego piksela
 volatile uint8_t ccd_data_ready			=0;		//czy dane z ccd sa gotowe (odczytane)?
 
-volatile uint16_t ccd[NUM_PIX];					//miejsce na surowe probki odczytane z CCD
-volatile uint32_t ccd_avg[NUM_PIX];				//miejsce na usrednione probki z CCD
-volatile uint32_t ccd_fir[NUM_PIX];				//miejsce na odfiltrowane przebiegi z CCD
+uint16_t ccd[NUM_PIX];					//miejsce na surowe probki odczytane z CCD
+uint32_t ccd_avg[NUM_PIX];				//miejsce na usrednione probki z CCD
+uint32_t ccd_fir[NUM_PIX];				//miejsce na odfiltrowane przebiegi z CCD
 
 volatile uint16_t meas_num=0;					//ile pomiarow mamy?
 
@@ -92,8 +92,8 @@ volatile float temp						=0.0;	//temperatura z DSa
 uint16_t contrast						=0;		//kontrast CCD
 float led_current;								//do odczytu pradu leda - bezuzyteczna zmienna
 
-volatile uint8_t uart_in[25];					//miejsce na dane wejsciowe z "plytki komputera"
-volatile uint8_t uart_out[50];					//miejsce na odpowiedz z pomiarem do "plytki komputera"
+uint8_t uart_in[25];					//miejsce na dane wejsciowe z "plytki komputera"
+uint8_t uart_out[50];					//miejsce na odpowiedz z pomiarem do "plytki komputera"
 volatile uint8_t cal_data_save_pending	=0;		//czy mamy dane kalibracyjne gotowe do zapisu do eepromu?
 uint8_t autoled_pending					=0;		//czy trzeba robic autoled?
 

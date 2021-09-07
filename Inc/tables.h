@@ -1,7 +1,7 @@
 #ifndef TABLES_H_
 #define TABLES_H_
 
-static const float n_brix[18401]={
+volatile static const float n_brix[18401]={
 	1.330152993445,		//-2.000
 	1.330160025597,		//-1.995
 	1.330167057750,		//-1.990
