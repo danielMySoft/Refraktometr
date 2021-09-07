@@ -281,36 +281,13 @@ int main(void)
 	  for(uint16_t i=0; i<NUM_PIX; i++)
 		  ccd_avg[i]=0;
 
-	  for(uint8_t i=0; i<AVG_LINES; i++)
-	  {
+	  for(uint8_t i=0; i<AVG_LINES; i++)  {
 		  getCCD();
-
-		  //if(i==AVG_LINES/2)	//w srodku pomiarow zmierz temperature
-			  //meas.temp=DS_GetTemp();
-
 		  for(uint16_t j=0; j<NUM_PIX; j++)
 			  ccd_avg[j]+=ccd[j];
-
-		  //HAL_UART_Transmit(&huart1, (uint8_t*)ccd, 2*NUM_PIX, 1000);
-		  //HAL_Delay(10);
 	  }
 
 	  meas.temp=DS_GetTemp()+cal_data.temp_corr;
-
-	  //usrednienie
-	  //for(uint16_t j=0; j<NUM_PIX; j++)
-		  //ccd_avg[j]/=AVG_LINES;
-
-	  //debug
-//	  for(uint16_t i=0; i<NUM_PIX; i++)
-//	  {
-//	  	  uint8_t uart_dbg_msg[16];
-//	  	  sprintf(uart_dbg_msg, "%ld ", ccd_avg[i]);
-//	  	  HAL_UART_Transmit(&huart1, uart_dbg_msg, strlen(uart_dbg_msg), 5);
-//	  }
-//	  uint8_t lf=13;
-//	  HAL_UART_Transmit(&huart1, &lf, 1, 2);
-//	  HAL_Delay(500);
 
 	  //dalsza matematyka
 	  //lowpass(ccd_avg, 3650, AVG_FILTER);
@@ -319,55 +296,23 @@ int main(void)
 	  fir(ccd_avg, ccd_fir, 9);
 	  fir(ccd_fir, ccd_avg, 11);
 
-	  //debug
-//	  for(uint16_t i=0; i<NUM_PIX; i++)
-//	  {
-//	  	  uint8_t uart_dbg_msg[16];
-//	  	  sprintf(uart_dbg_msg, "%ld ", ccd_avg[i]);
-//	  	  HAL_UART_Transmit(&huart1, uart_dbg_msg, strlen(uart_dbg_msg), 5);
-//	  }
-//	  uint8_t lf=13;
-//	  HAL_UART_Transmit(&huart1, &lf, 1, 2);
-//	  HAL_Delay(500);
-
 	  std_dev(ccd_avg, STD_DEV_LEN);
-
-	  //debug
-//	  for(uint16_t i=0; i<NUM_PIX; i++)
-//	  {
-//	  	  uint8_t uart_dbg_msg[16];
-//	  	  sprintf(uart_dbg_msg, "%ld ", ccd_avg[i]);
-//	  	  HAL_UART_Transmit(&huart1, uart_dbg_msg, strlen(uart_dbg_msg), 5);
-//	  }
-//	  uint8_t lf=13;
-//	  HAL_UART_Transmit(&huart1, &lf, 1, 2);
-//	  HAL_Delay(500);
 
 	  //szukanie wartosci maksymalnej odchylenia standardowego
 	  //przy okazji sprawdzenie, dla jakiego numeru piksela wystepuje
 	  max_val=0;
-	  for(uint16_t i=150; i<3500; i++)
-	  {
-		  if(ccd_avg[i]>max_val)
-		  {
+	  for(uint16_t i=150; i<3500; i++) {
+		  if(ccd_avg[i]>max_val) {
 			  max_val=ccd_avg[i];
 			  pix_num=i;
 		  }
 	  }
 
-	  for(uint8_t i=0; i<PIX_NUM_AVG-1; i++)
-	  {
+	  for(uint8_t i=0; i<PIX_NUM_AVG-1; i++) {
 		  pix_nums[i]=pix_nums[i+1];
 	  }
 
-	  //dopisujemy kolejna wartosc piksela jezeli:
-	  //poprzedni jest zerem (jeszcze nie zostala do niego wpisana wartosc)
-	  //lub
-	  //wartosc nowego piksela zawiera sie w +/-3% poprzedniej wartosci
-	  //if(pix_nums[PIX_NUM_AVG-2]<150 || (pix_nums[PIX_NUM_AVG-2]*1.05>=pix_num && pix_nums[PIX_NUM_AVG-2]*0.95<=pix_num))
-		  pix_nums[PIX_NUM_AVG-1]=pix_num;
-	  //else
-		  //pix_nums[PIX_NUM_AVG-1]=pix_nums[PIX_NUM_AVG-2];
+	  pix_nums[PIX_NUM_AVG-1]=pix_num;
 
 	  if(meas_num<PIX_NUM_AVG)
 		  meas_num++;
@@ -376,8 +321,6 @@ int main(void)
 	  for(int16_t i=PIX_NUM_AVG-1; i>PIX_NUM_AVG-1-meas_num; i--)
 		  pn+=pix_nums[i];
 	  meas.num_pix=pn/meas_num;
-
-	  //HAL_UART_Transmit(&huart1, (uint8_t*)ccd_avg, 4*NUM_PIX, 2000);
 
 	  if(max_val<10000)	//brak probki, bylo 4000
 	  {
