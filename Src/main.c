@@ -133,7 +133,7 @@ void PeriphCommonClock_Config(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	//przerwanie do odczytu linii z CCD, ok 7.5ms dla zegara 2MHz
-	//if(htim->Instance==TIM2)
+	if(htim->Instance==TIM2)
 	{
 		//czy ostatnio odczytywalismy linijke z CCD?
 		if(ccd_read_req && ccd_pix_num>100)
@@ -150,7 +150,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		SH_H;
 		for(uint16_t i=0; i<50; i++) asm("NOP");
 		SH_L;
-		for(uint16_t i=0; i<149; i++) asm("NOP");
+		for(uint16_t i=0; i<99; i++) asm("NOP");
 		ICG_H;
 		for(uint16_t i=0; i<500; i++) asm("NOP");
 

@@ -62,7 +62,7 @@ void autoLed(void)
 	for(uint8_t i=0; i<50; i++) //bylo 0..200
 	{
 		setLedCurrent((float)i/10000.0);	//40000
-		HAL_Delay(20);	//bylo 25
+		HAL_Delay(100);	//bylo 25
 
 		//memset((uint8_t*)ccd, 0, NUM_PIX*2);
 
