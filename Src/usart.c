@@ -1,38 +1,18 @@
 /**
   ******************************************************************************
-  * File Name          : USART.c
-  * Description        : This file provides code for the configuration
-  *                      of the USART instances.
+  * @file    usart.c
+  * @brief   This file provides code for the configuration
+  *          of the USART instances.
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
+  * @attention
   *
-  * COPYRIGHT(c) 2021 STMicroelectronics
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -51,6 +31,13 @@ UART_HandleTypeDef huart1;
 void MX_UART4_Init(void)
 {
 
+  /* USER CODE BEGIN UART4_Init 0 */
+
+  /* USER CODE END UART4_Init 0 */
+
+  /* USER CODE BEGIN UART4_Init 1 */
+
+  /* USER CODE END UART4_Init 1 */
   huart4.Instance = UART4;
   huart4.Init.BaudRate = 9600;
   huart4.Init.WordLength = UART_WORDLENGTH_8B;
@@ -60,15 +47,27 @@ void MX_UART4_Init(void)
   huart4.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart4.Init.OverSampling = UART_OVERSAMPLING_16;
   huart4.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart4.Init.Prescaler = UART_PRESCALER_DIV1;
-  huart4.Init.FIFOMode = UART_FIFOMODE_DISABLE;
-  huart4.Init.TXFIFOThreshold = UART_TXFIFO_THRESHOLD_1_8;
-  huart4.Init.RXFIFOThreshold = UART_RXFIFO_THRESHOLD_1_8;
+  huart4.Init.ClockPrescaler = UART_PRESCALER_DIV1;
   huart4.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
   if (HAL_UART_Init(&huart4) != HAL_OK)
   {
     Error_Handler();
   }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart4, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart4, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart4) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN UART4_Init 2 */
+
+  /* USER CODE END UART4_Init 2 */
 
 }
 /* USART1 init function */
@@ -76,6 +75,13 @@ void MX_UART4_Init(void)
 void MX_USART1_UART_Init(void)
 {
 
+  /* USER CODE BEGIN USART1_Init 0 */
+
+  /* USER CODE END USART1_Init 0 */
+
+  /* USER CODE BEGIN USART1_Init 1 */
+
+  /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
   huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
@@ -85,15 +91,27 @@ void MX_USART1_UART_Init(void)
   huart1.Init.HwFlowCtl = UART_HWCONTROL_NONE;
   huart1.Init.OverSampling = UART_OVERSAMPLING_16;
   huart1.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart1.Init.Prescaler = UART_PRESCALER_DIV1;
-  huart1.Init.FIFOMode = UART_FIFOMODE_DISABLE;
-  huart1.Init.TXFIFOThreshold = UART_TXFIFO_THRESHOLD_1_8;
-  huart1.Init.RXFIFOThreshold = UART_RXFIFO_THRESHOLD_1_8;
+  huart1.Init.ClockPrescaler = UART_PRESCALER_DIV1;
   huart1.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
   if (HAL_UART_Init(&huart1) != HAL_OK)
   {
     Error_Handler();
   }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart1, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart1, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART1_Init 2 */
+
+  /* USER CODE END USART1_Init 2 */
 
 }
 
@@ -101,18 +119,28 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
 {
 
   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
   if(uartHandle->Instance==UART4)
   {
   /* USER CODE BEGIN UART4_MspInit 0 */
 
   /* USER CODE END UART4_MspInit 0 */
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_UART4;
+    PeriphClkInitStruct.Usart234578ClockSelection = RCC_USART234578CLKSOURCE_CSI;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
     /* UART4 clock enable */
     __HAL_RCC_UART4_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**UART4 GPIO Configuration    
+    /**UART4 GPIO Configuration
     PA0     ------> UART4_TX
-    PA1     ------> UART4_RX 
+    PA1     ------> UART4_RX
     */
     GPIO_InitStruct.Pin = DS18B20_TX_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_OD;
@@ -140,13 +168,23 @@ void HAL_UART_MspInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE BEGIN USART1_MspInit 0 */
 
   /* USER CODE END USART1_MspInit 0 */
+
+  /** Initializes the peripherals clock
+  */
+    PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_USART1;
+    PeriphClkInitStruct.Usart16ClockSelection = RCC_USART16CLKSOURCE_D2PCLK2;
+    if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct) != HAL_OK)
+    {
+      Error_Handler();
+    }
+
     /* USART1 clock enable */
     __HAL_RCC_USART1_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**USART1 GPIO Configuration    
+    /**USART1 GPIO Configuration
     PB14     ------> USART1_TX
-    PB15     ------> USART1_RX 
+    PB15     ------> USART1_RX
     */
     GPIO_InitStruct.Pin = GPIO_PIN_14|GPIO_PIN_15;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -174,10 +212,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE END UART4_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_UART4_CLK_DISABLE();
-  
-    /**UART4 GPIO Configuration    
+
+    /**UART4 GPIO Configuration
     PA0     ------> UART4_TX
-    PA1     ------> UART4_RX 
+    PA1     ------> UART4_RX
     */
     HAL_GPIO_DeInit(GPIOA, DS18B20_TX_Pin|DS18B20_RX_Pin);
 
@@ -194,10 +232,10 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
   /* USER CODE END USART1_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_USART1_CLK_DISABLE();
-  
-    /**USART1 GPIO Configuration    
+
+    /**USART1 GPIO Configuration
     PB14     ------> USART1_TX
-    PB15     ------> USART1_RX 
+    PB15     ------> USART1_RX
     */
     HAL_GPIO_DeInit(GPIOB, GPIO_PIN_14|GPIO_PIN_15);
 
@@ -207,7 +245,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
   /* USER CODE END USART1_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 

@@ -74,10 +74,10 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define ICG_H		(GPIOA->BSRRL=1<<5)
-#define ICG_L		(GPIOA->BSRRH=1<<5)
-#define SH_H		(GPIOA->BSRRL=1<<3)
-#define SH_L		(GPIOA->BSRRH=1<<3)
+#define ICG_H		(GPIOA->BSRR=1<<5)
+#define ICG_L		(GPIOA->BSRR=1<<(5+16))
+#define SH_H		(GPIOA->BSRR=1<<3)
+#define SH_L		(GPIOA->BSRR=1<<(3+16))
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/

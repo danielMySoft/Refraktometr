@@ -1,38 +1,18 @@
 /**
   ******************************************************************************
-  * File Name          : TIM.c
-  * Description        : This file provides code for the configuration
-  *                      of the TIM instances.
+  * @file    tim.c
+  * @brief   This file provides code for the configuration
+  *          of the TIM instances.
   ******************************************************************************
-  ** This notice applies to any and all portions of this file
-  * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
-  * inserted by the user or by software development tools
-  * are owned by their respective copyright owners.
+  * @attention
   *
-  * COPYRIGHT(c) 2021 STMicroelectronics
+  * <h2><center>&copy; Copyright (c) 2021 STMicroelectronics.
+  * All rights reserved.</center></h2>
   *
-  * Redistribution and use in source and binary forms, with or without modification,
-  * are permitted provided that the following conditions are met:
-  *   1. Redistributions of source code must retain the above copyright notice,
-  *      this list of conditions and the following disclaimer.
-  *   2. Redistributions in binary form must reproduce the above copyright notice,
-  *      this list of conditions and the following disclaimer in the documentation
-  *      and/or other materials provided with the distribution.
-  *   3. Neither the name of STMicroelectronics nor the names of its contributors
-  *      may be used to endorse or promote products derived from this software
-  *      without specific prior written permission.
-  *
-  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-  * DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
-  * FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-  * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
-  * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
-  * CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
-  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  * This software component is licensed by ST under BSD 3-Clause license,
+  * the "License"; You may not use this file except in compliance with the
+  * License. You may obtain a copy of the License at:
+  *                        opensource.org/licenses/BSD-3-Clause
   *
   ******************************************************************************
   */
@@ -51,11 +31,19 @@ TIM_HandleTypeDef htim3;
 /* TIM1 init function */
 void MX_TIM1_Init(void)
 {
+
+  /* USER CODE BEGIN TIM1_Init 0 */
+
+  /* USER CODE END TIM1_Init 0 */
+
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
   TIM_BreakDeadTimeConfigTypeDef sBreakDeadTimeConfig = {0};
 
+  /* USER CODE BEGIN TIM1_Init 1 */
+
+  /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
   htim1.Init.Prescaler = 0;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -109,16 +97,27 @@ void MX_TIM1_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN TIM1_Init 2 */
+
+  /* USER CODE END TIM1_Init 2 */
   HAL_TIM_MspPostInit(&htim1);
 
 }
 /* TIM2 init function */
 void MX_TIM2_Init(void)
 {
+
+  /* USER CODE BEGIN TIM2_Init 0 */
+
+  /* USER CODE END TIM2_Init 0 */
+
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_SlaveConfigTypeDef sSlaveConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
 
+  /* USER CODE BEGIN TIM2_Init 1 */
+
+  /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
   htim2.Init.Prescaler = 99;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -136,7 +135,7 @@ void MX_TIM2_Init(void)
   }
   sSlaveConfig.SlaveMode = TIM_SLAVEMODE_TRIGGER;
   sSlaveConfig.InputTrigger = TIM_TS_ITR2;
-  if (HAL_TIM_SlaveConfigSynchronization(&htim2, &sSlaveConfig) != HAL_OK)
+  if (HAL_TIM_SlaveConfigSynchro(&htim2, &sSlaveConfig) != HAL_OK)
   {
     Error_Handler();
   }
@@ -146,15 +145,26 @@ void MX_TIM2_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN TIM2_Init 2 */
+
+  /* USER CODE END TIM2_Init 2 */
 
 }
 /* TIM3 init function */
 void MX_TIM3_Init(void)
 {
+
+  /* USER CODE BEGIN TIM3_Init 0 */
+
+  /* USER CODE END TIM3_Init 0 */
+
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
 
+  /* USER CODE BEGIN TIM3_Init 1 */
+
+  /* USER CODE END TIM3_Init 1 */
   htim3.Instance = TIM3;
   htim3.Init.Prescaler = 0;
   htim3.Init.CounterMode = TIM_COUNTERMODE_UP;
@@ -188,6 +198,9 @@ void MX_TIM3_Init(void)
   {
     Error_Handler();
   }
+  /* USER CODE BEGIN TIM3_Init 2 */
+
+  /* USER CODE END TIM3_Init 2 */
   HAL_TIM_MspPostInit(&htim3);
 
 }
@@ -247,8 +260,8 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
 
   /* USER CODE END TIM1_MspPostInit 0 */
     __HAL_RCC_GPIOE_CLK_ENABLE();
-    /**TIM1 GPIO Configuration    
-    PE9     ------> TIM1_CH1 
+    /**TIM1 GPIO Configuration
+    PE9     ------> TIM1_CH1
     */
     GPIO_InitStruct.Pin = GPIO_PIN_9;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -266,10 +279,10 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef* timHandle)
   /* USER CODE BEGIN TIM3_MspPostInit 0 */
 
   /* USER CODE END TIM3_MspPostInit 0 */
-  
+
     __HAL_RCC_GPIOA_CLK_ENABLE();
-    /**TIM3 GPIO Configuration    
-    PA7     ------> TIM3_CH2 
+    /**TIM3 GPIO Configuration
+    PA7     ------> TIM3_CH2
     */
     GPIO_InitStruct.Pin = GPIO_PIN_7;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -327,7 +340,7 @@ void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef* tim_baseHandle)
 
   /* USER CODE END TIM3_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 
