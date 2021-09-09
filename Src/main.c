@@ -170,7 +170,6 @@ void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 			ccd_pix_num=0;
 			ccd_read_req=0;
 			HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
-			ccd_read_req=0;
 		}
 	}
 }
@@ -290,8 +289,6 @@ int main(void)
 		  for(uint16_t j=0; j<NUM_PIX; j++)
 			  ccd_avg[j]+=ccd[j];
 	  }
-	  for(uint16_t j=0; j<NUM_PIX; j++)
-		  ccd_avg[j] = ccd_avg[j]/AVG_LINES;
 
 	  meas.temp=DS_GetTemp()+cal_data.temp_corr;
 
