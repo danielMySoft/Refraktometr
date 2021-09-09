@@ -89,7 +89,7 @@ void fir16(uint16_t *inp, uint16_t *outp, const uint8_t len)
 	{
 		tmp = 0;
 		for(int8_t j=-(len-1)/2; j<=(len-1)/2; j++)
-			tmp+=inp[i+i];
+			tmp+=inp[i+j];
 		outp[i]=tmp/len;
 	}
 
