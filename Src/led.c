@@ -80,6 +80,8 @@ void autoLed(void)
 		{
 			c_max=contrast;
 			curr_max=(float)i/10000.0;
+			if(contrast>20000)
+				break;
 		}
 	}
 
