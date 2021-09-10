@@ -135,26 +135,18 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	//przerwanie do odczytu linii z CCD, ok 7.5ms dla zegara 2MHz
 	//if(htim->Instance==TIM2)
 	{
-		//czy ostatnio odczytywalismy linijke z CCD?
-		if(ccd_read_req && ccd_pix_num>100)
-		{
-			HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
-			//HAL_ADC_Stop(&hadc2);
-			ccd_read_req=0;
-			ccd_pix_num=0;
-			ccd_data_ready=1;
-		}
 
 		ICG_L;
 		for(uint16_t i=0; i<5; i++) asm("NOP");
 		SH_H;
 		for(uint16_t i=0; i<50; i++) asm("NOP");
 		SH_L;
-		for(uint16_t i=0; i<149; i++) asm("NOP");
+		for(uint16_t i=0; i<99; i++) asm("NOP");
 		ICG_H;
 
 		if(ccd_read_req)
 		{
+			ccd_read_req = 0;
 			TIM1->CNT=0;
 			ccd_pix_num=0;
 			ccd_data_ready=0;
@@ -171,6 +163,13 @@ void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 		HAL_ADC_Start(&hadc2);
 		ccd[ccd_pix_num]=HAL_ADC_GetValue(&hadc2);
 		ccd_pix_num++;
+		if(ccd_pix_num>=3700){
+			ccd_data_ready = 1;
+			ccd_pix_num=0;
+			ccd_read_req=0;
+			HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
+			ccd_read_req=0;
+		}
 	}
 }
 
