@@ -95,7 +95,7 @@ float led_current;								//do odczytu pradu leda - bezuzyteczna zmienna
 uint8_t uart_in[25];					//miejsce na dane wejsciowe z "plytki komputera"
 uint8_t uart_out[50];					//miejsce na odpowiedz z pomiarem do "plytki komputera"
 volatile uint8_t cal_data_save_pending	=0;		//czy mamy dane kalibracyjne gotowe do zapisu do eepromu?
-uint8_t autoled_pending					=0;		//czy trzeba robic autoled?
+uint8_t autoled_pend					=1;		//czy trzeba robic autoled?
 
 uint16_t pix_num						=0;		//obliczony numer piksela, do przeliczen na brixy
 uint32_t max_val						=0;		//wartosc odchylenia standardowego dla piksela pix_num (czyli maksymalna globalnie)
@@ -185,6 +185,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 void getCCD(void)
 {
 	//memset((uint8_t*)ccd, 0, 2*NUM_PIX);
+	ccd_data_ready = 0;
 	ccd_read_req=1;
 	while(!ccd_data_ready);
 }
@@ -268,8 +269,8 @@ int main(void)
   HAL_Delay(2000);
   HAL_UART_Receive_IT(&huart1, uart_in, 21);
 
-  autoLed();
-  //setLedCurrent(0.0019); //bylo 0.0012
+  //autoLed();
+  setLedCurrent(0.0019); //bylo 0.0012
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -302,7 +303,7 @@ int main(void)
 	  //szukanie wartosci maksymalnej odchylenia standardowego
 	  //przy okazji sprawdzenie, dla jakiego numeru piksela wystepuje
 	  max_val=0;
-	  for(uint16_t i=150; i<3500; i++) {
+	  for(uint16_t i=100; i<3600; i++) {
 		  if(ccd_avg[i]>max_val) {
 			  max_val=ccd_avg[i];
 			  pix_num=i;
@@ -323,8 +324,9 @@ int main(void)
 		  pn+=pix_nums[i];
 	  meas.num_pix=pn/meas_num;
 
-	  if(max_val<10000)	//brak probki, bylo 4000
+	  if(max_val<5000)	//brak probki, bylo 4000
 	  {
+		  autoled_pend = 2;
 		  meas_num=0;
 		  for(uint8_t i=0; i<PIX_NUM_AVG-1; i++)
 			  pix_nums[i]=0;
@@ -340,6 +342,10 @@ int main(void)
 	  {
 		  //gdy jest obecna probka
 		  //licz wszystko
+		  if(autoled_pend!=0){
+			  autoLed();
+			  autoled_pend = 0;
+		  }
 		  float ns=1.75996+((13.6e-6)*(meas.temp-20.0));// n szafiru
 		  float xp=-(REAL_PIX_NUM/2.0-meas.num_pix+cal_data.x_corr)*0.008;
 		  xp+=cal_data.D*pow(xp, 3.0);

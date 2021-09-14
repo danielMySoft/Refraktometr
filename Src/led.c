@@ -62,8 +62,8 @@ void autoLed(void)
 	for(uint8_t i=0; i<50; i++) //bylo 0..200
 	{
 		setLedCurrent((float)i/10000.0);	//40000
-		HAL_Delay(20);	//bylo 25
-
+		HAL_Delay(10);	//bylo 25
+		getCCD();
 		//memset((uint8_t*)ccd, 0, NUM_PIX*2);
 
 		ccd_read_req=1;
@@ -80,7 +80,7 @@ void autoLed(void)
 		{
 			c_max=contrast;
 			curr_max=(float)i/10000.0;
-			if(contrast>20000)
+			if(contrast>21850)
 				break;
 		}
 	}

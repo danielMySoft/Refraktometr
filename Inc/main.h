@@ -69,7 +69,7 @@ extern "C" {
 #define	AVG_LINES			10						//usrednianie tylu linijek CCD
 #define	AVG_FILTER			8						//parametr filtra wygladzajacego
 #define	STD_DEV_LEN			64						//z ilu probek liczymy odchylenie standardowe
-#define PIX_NUM_AVG			120						//z ilu wartosci pix_num liczymy srednia
+#define PIX_NUM_AVG			60						//z ilu wartosci pix_num liczymy srednia
 /* USER CODE END EC */
 
 /* Exported macro ------------------------------------------------------------*/

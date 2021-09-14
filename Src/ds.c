@@ -79,15 +79,15 @@ float DS_GetTemp(void)
 	DS_Reset();
 	HAL_Delay(5);
 	DS_Write(0xCC);
-	//HAL_Delay(1);
+	HAL_Delay(1);
 	DS_Write(0x44);
-	//HAL_Delay(1);
+	HAL_Delay(1);
 	DS_Reset();
 	HAL_Delay(5);
 	DS_Write(0xCC);
-	//HAL_Delay(1);
+	HAL_Delay(1);
 	DS_Write(0xBE);
-	//HAL_Delay(1);
+	HAL_Delay(1);
 	DS_Read(9*8, local_ds);
 
 	uint16_t temp=0;
