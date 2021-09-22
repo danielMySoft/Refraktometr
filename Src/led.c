@@ -50,7 +50,6 @@ uint16_t getContrast(uint16_t *inp)
 		if(inp[i]<min)
 			min=inp[i];
 	}
-
 	return max-min;
 }
 
