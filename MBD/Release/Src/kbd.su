@@ -1,0 +1,3 @@
+kbd.c:14:6:register_on_key_press_callback	16	static
+kbd.c:19:13:isr_kbd	16	static
+kbd.c:48:6:kbd_event_handler	16	static

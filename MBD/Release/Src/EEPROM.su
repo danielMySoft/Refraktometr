@@ -1,0 +1,10 @@
+EEPROM.c:10:9:spiTradeByte	32	static
+EEPROM.c:19:9:EEPROM_read	24	static
+EEPROM.c:31:6:EEPROM_read_multiple	16	static
+EEPROM.c:43:6:EEPROM_readSettings	16	static
+EEPROM.c:55:6:EEPROM_write	16	static
+EEPROM.c:69:6:EEPROM_write_multiple	16	static
+EEPROM.c:85:6:EEPROM_add_archive_entry	24	static
+EEPROM.c:150:6:EEPROM_read_archive_entry	32	static
+EEPROM.c:183:6:erase_archive	144	static
+EEPROM.c:206:6:erase_settings	24	static
