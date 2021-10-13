@@ -6,7 +6,7 @@
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -90,12 +90,12 @@ void HAL_SPI_MspInit(SPI_HandleTypeDef* spiHandle)
   /* USER CODE END SPI4_MspInit 0 */
     /* SPI4 clock enable */
     __HAL_RCC_SPI4_CLK_ENABLE();
-  
+
     __HAL_RCC_GPIOE_CLK_ENABLE();
-    /**SPI4 GPIO Configuration    
+    /**SPI4 GPIO Configuration
     PE2     ------> SPI4_SCK
     PE5     ------> SPI4_MISO
-    PE6     ------> SPI4_MOSI 
+    PE6     ------> SPI4_MOSI
     */
     GPIO_InitStruct.Pin = SCLK_Pin|SDO_Pin|SDI_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
@@ -120,11 +120,11 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
   /* USER CODE END SPI4_MspDeInit 0 */
     /* Peripheral clock disable */
     __HAL_RCC_SPI4_CLK_DISABLE();
-  
-    /**SPI4 GPIO Configuration    
+
+    /**SPI4 GPIO Configuration
     PE2     ------> SPI4_SCK
     PE5     ------> SPI4_MISO
-    PE6     ------> SPI4_MOSI 
+    PE6     ------> SPI4_MOSI
     */
     HAL_GPIO_DeInit(GPIOE, SCLK_Pin|SDO_Pin|SDI_Pin);
 
@@ -132,7 +132,7 @@ void HAL_SPI_MspDeInit(SPI_HandleTypeDef* spiHandle)
 
   /* USER CODE END SPI4_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 

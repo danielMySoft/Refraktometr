@@ -83,6 +83,8 @@ uint32_t ccd_avg[NUM_PIX];				//miejsce na usrednione probki z CCD
 uint32_t ccd_fir[NUM_PIX];				//miejsce na odfiltrowane przebiegi z CCD
 
 volatile uint16_t meas_num=0;					//ile pomiarow mamy?
+volatile uint8_t tim5_flag 				= 0;
+volatile uint8_t tim5_first_flag 		= 0;
 
 volatile uint8_t test					=0;		//test
 float f_test							=0.0;	//test
@@ -133,7 +135,7 @@ void SystemClock_Config(void);
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	//przerwanie do odczytu linii z CCD, ok 7.5ms dla zegara 2MHz
-	//if(htim->Instance==TIM2)
+	if(htim->Instance==TIM2)
 	{
 
 		ICG_L;
@@ -150,17 +152,25 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			TIM1->CNT=0;
 			ccd_pix_num=0;
 			ccd_data_ready=0;
+			HAL_ADC_Start(&hadc2);
 			HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
 		}
+	}
+	if(htim->Instance == TIM5){
+//		if(tim5_first_flag)
+//			tim5_first_flag = 0;
+//		else{
+//			autoled_pend = 1;
+//			HAL_TIM_Base_Stop_IT(&htim5);
+//		}
 	}
 }
 
 void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	//przerwanie do odczytu probki sygnalu z CCD, 500kHz
-	//if(htim->Instance==TIM1)
+	if(htim->Instance==TIM1)
 	{
-		HAL_ADC_Start(&hadc2);
 		ccd[ccd_pix_num]=HAL_ADC_GetValue(&hadc2);
 		ccd_pix_num++;
 		if(ccd_pix_num>=3700){
@@ -170,6 +180,7 @@ void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 			HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
 			ccd_read_req=0;
 		}
+		HAL_ADC_Start(&hadc2);
 	}
 }
 
@@ -246,6 +257,7 @@ int main(void)
   MX_TIM1_Init();
   MX_UART4_Init();
   MX_USART1_UART_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   SCB->CPACR|=(3<<20)|(3<<22);
 
@@ -281,8 +293,11 @@ int main(void)
 	  for(uint16_t i=0; i<NUM_PIX; i++)
 		  ccd_avg[i]=0;
 
+	  uint8_t cnt = 0;
 	  for(uint8_t i=0; i<AVG_LINES; i++)  {
 		  getCCD();
+		  if(ccd[10] < 45000)
+			  cnt+=1;
 		  for(uint16_t j=0; j<NUM_PIX; j++)
 			  ccd_avg[j]+=ccd[j];
 	  }
@@ -459,21 +474,21 @@ void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
-  /**Supply configuration update enable 
+  /**Supply configuration update enable
   */
   MODIFY_REG(PWR->CR3, PWR_CR3_SCUEN, 0);
-  /**Configure the main internal regulator output voltage 
+  /**Configure the main internal regulator output voltage
   */
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
-  while ((PWR->D3CR & (PWR_D3CR_VOSRDY)) != PWR_D3CR_VOSRDY) 
+  while ((PWR->D3CR & (PWR_D3CR_VOSRDY)) != PWR_D3CR_VOSRDY)
   {
-    
+
   }
-  /**Macro to configure the PLL clock source 
+  /**Macro to configure the PLL clock source
   */
   __HAL_RCC_PLL_PLLSOURCE_CONFIG(RCC_PLLSOURCE_HSE);
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /**Initializes the CPU, AHB and APB busses clocks
   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_CSI|RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
@@ -493,7 +508,7 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /**Initializes the CPU, AHB and APB busses clocks 
+  /**Initializes the CPU, AHB and APB busses clocks
   */
   RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
                               |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
@@ -555,7 +570,7 @@ void Error_Handler(void)
   * @retval None
   */
 void assert_failed(uint8_t *file, uint32_t line)
-{ 
+{
   /* USER CODE BEGIN 6 */
   /* User can add his own implementation to report the file name and line number,
      tex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */

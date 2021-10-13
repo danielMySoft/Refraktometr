@@ -6,7 +6,7 @@
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
-  * USER CODE END. Other portions of this file, whether 
+  * USER CODE END. Other portions of this file, whether
   * inserted by the user or by software development tools
   * are owned by their respective copyright owners.
   *
@@ -53,7 +53,7 @@ void MX_ADC1_Init(void)
   ADC_MultiModeTypeDef multimode = {0};
   ADC_ChannelConfTypeDef sConfig = {0};
 
-  /**Common config 
+  /**Common config
   */
   hadc1.Instance = ADC1;
   hadc1.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV12;
@@ -75,14 +75,14 @@ void MX_ADC1_Init(void)
   {
     Error_Handler();
   }
-  /**Configure the ADC multi-mode 
+  /**Configure the ADC multi-mode
   */
   multimode.Mode = ADC_MODE_INDEPENDENT;
   if (HAL_ADCEx_MultiModeConfigChannel(&hadc1, &multimode) != HAL_OK)
   {
     Error_Handler();
   }
-  /**Configure Regular Channel 
+  /**Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_5;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -101,7 +101,7 @@ void MX_ADC2_Init(void)
 {
   ADC_ChannelConfTypeDef sConfig = {0};
 
-  /**Common config 
+  /**Common config
   */
   hadc2.Instance = ADC2;
   hadc2.Init.ClockPrescaler = ADC_CLOCK_ASYNC_DIV12;
@@ -123,7 +123,7 @@ void MX_ADC2_Init(void)
   {
     Error_Handler();
   }
-  /**Configure Regular Channel 
+  /**Configure Regular Channel
   */
   sConfig.Channel = ADC_CHANNEL_11;
   sConfig.Rank = ADC_REGULAR_RANK_1;
@@ -154,10 +154,10 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     if(HAL_RCC_ADC12_CLK_ENABLED==1){
       __HAL_RCC_ADC12_CLK_ENABLE();
     }
-  
+
     __HAL_RCC_GPIOB_CLK_ENABLE();
-    /**ADC1 GPIO Configuration    
-    PB1     ------> ADC1_INP5 
+    /**ADC1 GPIO Configuration
+    PB1     ------> ADC1_INP5
     */
     GPIO_InitStruct.Pin = I_LED_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
@@ -178,10 +178,10 @@ void HAL_ADC_MspInit(ADC_HandleTypeDef* adcHandle)
     if(HAL_RCC_ADC12_CLK_ENABLED==1){
       __HAL_RCC_ADC12_CLK_ENABLE();
     }
-  
+
     __HAL_RCC_GPIOC_CLK_ENABLE();
-    /**ADC2 GPIO Configuration    
-    PC1     ------> ADC2_INP11 
+    /**ADC2 GPIO Configuration
+    PC1     ------> ADC2_INP11
     */
     GPIO_InitStruct.Pin = CCD_OS_Pin;
     GPIO_InitStruct.Mode = GPIO_MODE_ANALOG;
@@ -207,9 +207,9 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     if(HAL_RCC_ADC12_CLK_ENABLED==0){
       __HAL_RCC_ADC12_CLK_DISABLE();
     }
-  
-    /**ADC1 GPIO Configuration    
-    PB1     ------> ADC1_INP5 
+
+    /**ADC1 GPIO Configuration
+    PB1     ------> ADC1_INP5
     */
     HAL_GPIO_DeInit(I_LED_GPIO_Port, I_LED_Pin);
 
@@ -227,9 +227,9 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
     if(HAL_RCC_ADC12_CLK_ENABLED==0){
       __HAL_RCC_ADC12_CLK_DISABLE();
     }
-  
-    /**ADC2 GPIO Configuration    
-    PC1     ------> ADC2_INP11 
+
+    /**ADC2 GPIO Configuration
+    PC1     ------> ADC2_INP11
     */
     HAL_GPIO_DeInit(CCD_OS_GPIO_Port, CCD_OS_Pin);
 
@@ -237,7 +237,7 @@ void HAL_ADC_MspDeInit(ADC_HandleTypeDef* adcHandle)
 
   /* USER CODE END ADC2_MspDeInit 1 */
   }
-} 
+}
 
 /* USER CODE BEGIN 1 */
 
