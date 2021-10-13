@@ -42,6 +42,7 @@
 #include "main.h"
 #include "adc.h"
 #include "dac.h"
+#include "dma.h"
 #include "spi.h"
 #include "tim.h"
 #include "usart.h"
@@ -152,8 +153,8 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			TIM1->CNT=0;
 			ccd_pix_num=0;
 			ccd_data_ready=0;
-			HAL_ADC_Start(&hadc2);
-			HAL_TIM_PWM_Start_IT(&htim1, TIM_CHANNEL_1);
+			HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ccd, 3000);
+			HAL_TIM_Base_Start(&htim1);
 		}
 	}
 	if(htim->Instance == TIM5){
@@ -166,21 +167,25 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+	//ccd[ccd_pix_num]=HAL_ADC_GetValue(&hadc2);
+	ccd_pix_num++;
+	if(ccd_pix_num>=3700){
+		ccd_data_ready = 1;
+		ccd_pix_num=0;
+		ccd_read_req=0;
+		HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
+		ccd_read_req=0;
+	}
+	//HAL_ADC_Start(&hadc2);
+}
 void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	//przerwanie do odczytu probki sygnalu z CCD, 500kHz
 	if(htim->Instance==TIM1)
 	{
-		ccd[ccd_pix_num]=HAL_ADC_GetValue(&hadc2);
-		ccd_pix_num++;
-		if(ccd_pix_num>=3700){
-			ccd_data_ready = 1;
-			ccd_pix_num=0;
-			ccd_read_req=0;
-			HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
-			ccd_read_req=0;
-		}
-		HAL_ADC_Start(&hadc2);
+
 	}
 }
 
@@ -248,6 +253,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_ADC1_Init();
   MX_SPI4_Init();
   MX_DAC1_Init();

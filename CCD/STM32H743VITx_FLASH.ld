@@ -127,7 +127,7 @@ SECTIONS
 
     . = ALIGN(4);
     _edata = .;        /* define a global symbol at data end */
-  } >DTCMRAM AT> FLASH
+  } >RAM_D1 AT> FLASH
 
   
   /* Uninitialized data section */
@@ -144,18 +144,19 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
-  } >DTCMRAM
+  } >RAM_D1
 
   /* User_heap_stack section, used to check that there is enough RAM left */
   ._user_heap_stack :
   {
-    . = ALIGN(8);
-    PROVIDE ( end = . );
-    PROVIDE ( _end = . );
-    . = . + _Min_Heap_Size;
-    . = . + _Min_Stack_Size;
-    . = ALIGN(8);
-  } >DTCMRAM
+	 . = ALIGN(8);
+	 PROVIDE ( end = . );
+	 PROVIDE ( _end = . );
+	 . = . + _Min_Heap_Size;
+	 . = . + _Min_Stack_Size;
+	 _estack = .; /* <<<< line added */
+	 . = ALIGN(8);
+  } >RAM_D1
 
   
 
