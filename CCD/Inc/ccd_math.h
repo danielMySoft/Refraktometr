@@ -11,9 +11,14 @@
 #include "main.h"
 #include <stdint.h>
 #include <math.h>
+#include "global.h"
 
+void fir16(uint16_t *inp, uint16_t *outp, const uint8_t len);
 void fir(uint32_t *inp, uint32_t *outp, const uint8_t len);
 void lowpass(uint32_t *in, const uint16_t siz, const uint8_t len);
 void std_dev(uint32_t *arr, const uint16_t len);
+void saveCalData(void);
+void readCalData(void);
+uint16_t getContrast(uint16_t *inp);
 
 #endif /* CCD_MATH_H_ */

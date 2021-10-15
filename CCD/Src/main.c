@@ -55,6 +55,7 @@
 #include "eeprom.h"
 #include "ccd_math.h"
 #include <string.h>
+#include "global.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,54 +76,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-volatile uint8_t ccd_read_req			=0;		//czy chcemy odczytac linijke z CCD?
-volatile uint16_t ccd_pix_num			=0;		//numer odczytywanego piksela
-volatile uint8_t ccd_data_ready			=0;		//czy dane z ccd sa gotowe (odczytane)?
 
-uint16_t ccd[NUM_PIX];					//miejsce na surowe probki odczytane z CCD
-uint32_t ccd_avg[NUM_PIX];				//miejsce na usrednione probki z CCD
-uint32_t ccd_fir[NUM_PIX];				//miejsce na odfiltrowane przebiegi z CCD
-
-volatile uint16_t meas_num=0;					//ile pomiarow mamy?
-volatile uint8_t tim5_flag 				= 0;
-volatile uint8_t tim5_first_flag 		= 0;
-
-volatile uint8_t test					=0;		//test
-float f_test							=0.0;	//test
-
-volatile float temp						=0.0;	//temperatura z DSa
-
-uint16_t contrast						=0;		//kontrast CCD
-float led_current;								//do odczytu pradu leda - bezuzyteczna zmienna
-
-uint8_t uart_in[25];					//miejsce na dane wejsciowe z "plytki komputera"
-uint8_t uart_out[50];					//miejsce na odpowiedz z pomiarem do "plytki komputera"
-volatile uint8_t cal_data_save_pending	=0;		//czy mamy dane kalibracyjne gotowe do zapisu do eepromu?
-uint8_t autoled_pend					=1;		//czy trzeba robic autoled?
-
-uint16_t pix_num						=0;		//obliczony numer piksela, do przeliczen na brixy
-uint32_t max_val						=0;		//wartosc odchylenia standardowego dla piksela pix_num (czyli maksymalna globalnie)
-uint32_t pix_nums[PIX_NUM_AVG];					//ostatnie kilka wartosci pix_num
-
-struct calib
-{
-	uint16_t serial;	//numer seryjny
-	float f;			//ogniskowa
-	float D;			//dystorsja
-	float temp_corr;	//korekcja temperatury
-	float x_corr;		//korekcja polozenia
-} cal_data;
-
-struct measurement
-{
-	float temp;			//temperatura zmierzona
-	float nc;			//wspolczynnik zalamania zmierzony w temperaturze pomiaru
-	float nck;			//wspolczynnik zalamania obliczony dla temp. 20*C
-	float brix;			//brixy zmierzone
-	float brixk;		//brixy po korekcji temperaturowej
-	float led_curr;		//prad LEDa w mA
-	float num_pix;		//numer granicznego piksela obliczony
-} meas;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -133,6 +87,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
 	//przerwanie do odczytu linii z CCD, ok 7.5ms dla zegara 2MHz
@@ -153,7 +108,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			TIM1->CNT=0;
 			ccd_pix_num=0;
 			ccd_data_ready=0;
-			HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ccd, 3000);
+			HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ccd, 3700);
 			HAL_TIM_Base_Start(&htim1);
 		}
 	}
@@ -170,14 +125,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
 	//ccd[ccd_pix_num]=HAL_ADC_GetValue(&hadc2);
-	ccd_pix_num++;
-	if(ccd_pix_num>=3700){
-		ccd_data_ready = 1;
-		ccd_pix_num=0;
-		ccd_read_req=0;
-		HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
-		ccd_read_req=0;
-	}
+//	ccd_pix_num++;
+//	if(ccd_pix_num>=3700){
+//		ccd_data_ready = 1;
+//		ccd_pix_num=0;
+//		ccd_read_req=0;
+//		HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
+//		ccd_read_req=0;
+//	}
 	//HAL_ADC_Start(&hadc2);
 }
 void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
@@ -196,32 +151,6 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 	{
 		cal_data_save_pending=1;
 	}
-}
-
-void getCCD(void)
-{
-	//memset((uint8_t*)ccd, 0, 2*NUM_PIX);
-	ccd_data_ready = 0;
-	ccd_read_req=1;
-	while(!ccd_data_ready);
-}
-
-void saveCalData(void)
-{
-	eepromWriteInt(EEPROM_BASE_ADDR  +0, cal_data.serial);
-	eepromWriteFloat(EEPROM_BASE_ADDR+2, cal_data.f);
-	eepromWriteFloat(EEPROM_BASE_ADDR+6, cal_data.D);
-	eepromWriteFloat(EEPROM_BASE_ADDR+10, cal_data.temp_corr);
-	eepromWriteFloat(EEPROM_BASE_ADDR+14, cal_data.x_corr);
-}
-
-void readCalData(void)
-{
-	cal_data.serial=eepromReadInt(EEPROM_BASE_ADDR  +0);
-	cal_data.f=eepromReadFloat(EEPROM_BASE_ADDR+2);
-	cal_data.D=eepromReadFloat(EEPROM_BASE_ADDR+6);
-	cal_data.temp_corr=eepromReadFloat(EEPROM_BASE_ADDR+10);
-	cal_data.x_corr=eepromReadFloat(EEPROM_BASE_ADDR+14);
 }
 /* USER CODE END 0 */
 
@@ -289,6 +218,7 @@ int main(void)
 
   //autoLed();
   setLedCurrent(0.0019); //bylo 0.0012
+  autoLed();
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -307,6 +237,7 @@ int main(void)
 		  for(uint16_t j=0; j<NUM_PIX; j++)
 			  ccd_avg[j]+=ccd[j];
 	  }
+	  test1 = ccd_avg[10];
 	  for(uint16_t j=0; j<NUM_PIX; j++)
 		  ccd_avg[j] = ccd_avg[j]/AVG_LINES;
 

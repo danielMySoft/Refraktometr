@@ -10,11 +10,24 @@
 #include "dac.h"
 #include "adc.h"
 #include "ccd_math.h"
+#include <string.h>
+#include "tim.h"
+#include "global.h"
 
-extern volatile uint16_t ccd[NUM_PIX];
-extern volatile uint8_t ccd_read_req;
-extern volatile uint8_t ccd_data_ready;
-extern volatile uint16_t contrast;
+void getCCD(void)
+{
+	for(uint16_t i=0; i<NUM_PIX; i++)
+		ccd[i] = 0;
+	//memset((uint8_t*)ccd, 0, 2*NUM_PIX);
+	ccd_data_ready = 0;
+	ccd_read_req=1;
+	while(ccd[NUM_PIX-1] == 0){
+		HAL_Delay(1);
+	};
+	ccd_data_ready = 1;
+	ccd_read_req=0;
+	HAL_TIM_Base_Stop(&htim1);
+}
 
 void setLedCurrent(float current)
 {
@@ -39,42 +52,30 @@ float getLedCurrent(void)
 	return (val/65535.0*REF)/RI;
 }
 
-uint16_t getContrast(uint16_t *inp)
-{
-	uint16_t min=65535, max=0;
-
-	for(uint16_t i=150; i<3550; i++)
-	{
-		if(inp[i]>max)
-			max=inp[i];
-		if(inp[i]<min)
-			min=inp[i];
-	}
-	return max-min;
-}
-
 void autoLed(void)
 {
 	volatile uint16_t c_max=0;
 	float curr_max=0.0;
-	uint16_t ccd_copy[NUM_PIX];
 	for(uint8_t i=0; i<50; i++) //bylo 0..200
 	{
 		setLedCurrent((float)i/10000.0);	//40000
 		HAL_Delay(10);	//bylo 25
 		getCCD();
-		//memset((uint8_t*)ccd, 0, NUM_PIX*2);
 
-		ccd_read_req=1;
-		while(!ccd_data_ready);
-		fir16(ccd, ccd_copy, 3);
-		memcpy(ccd, ccd_copy, sizeof(ccd));
-		fir16(ccd, ccd_copy, 5);
-		memcpy(ccd, ccd_copy, sizeof(ccd));
-		fir16(ccd, ccd_copy, 7);
-		memcpy(ccd, ccd_copy, sizeof(ccd));
-		fir16(ccd, ccd_copy, 9);
-		contrast=getContrast(ccd_copy);
+		fir16(ccd, ccd_fir, 3);
+		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
+		fir16(ccd, ccd_fir, 5);
+		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
+		fir16(ccd, ccd_fir, 7);
+		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
+		fir16(ccd, ccd_fir, 9);
+		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
+		contrast=getContrast(ccd_fir);
+		if(i == 30){
+			volatile uint8_t aaa = 0;
+			aaa = 5;
+			pix_num = aaa;
+		}
 		if(contrast>c_max)
 		{
 			c_max=contrast;

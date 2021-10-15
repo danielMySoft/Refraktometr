@@ -15,9 +15,9 @@
 #define RI	51.0f
 #define REF	3.3f
 
+void getCCD(void);
 void setLedCurrent(float current);
 float getLedCurrent(void);
-uint16_t getContrast(uint16_t *inp);
 
 void autoLed(void);
 
