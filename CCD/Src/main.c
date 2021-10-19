@@ -243,6 +243,8 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  uint32_t time;
+	  uint32_t time0 = HAL_GetTick();
 	  //czyszczenie bufora i akwizycja danych
 	  for(uint16_t i=0; i<NUM_PIX; i++)
 		  ccd_avg[i]=0;
@@ -255,19 +257,25 @@ int main(void)
 		  for(uint16_t j=0; j<NUM_PIX; j++)
 			  ccd_avg[j]+=ccd[j];
 	  }
+
+	  time1 = HAL_GetTick() - time0;
+	  time = time1;
+
 	  test1 = ccd_avg[10];
 	  for(uint16_t j=0; j<NUM_PIX; j++)
 		  ccd_avg[j] = ccd_avg[j]/AVG_LINES;
 
 	  meas.temp=DS_GetTemp()+cal_data.temp_corr;
-
+	  time2 = HAL_GetTick() - time0;
+	  time = time2;
 	  //dalsza matematyka
 	  //lowpass(ccd_avg, 3650, AVG_FILTER);
 	  fir(ccd_avg, ccd_fir, 5);
 	  fir(ccd_fir, ccd_avg, 7);
 	  fir(ccd_avg, ccd_fir, 9);
 	  fir(ccd_fir, ccd_avg, 11);
-
+	  time3 = HAL_GetTick() - time0;
+	  time = time3;
 	  std_dev(ccd_avg, STD_DEV_LEN);
 
 	  //szukanie wartosci maksymalnej odchylenia standardowego
@@ -279,7 +287,8 @@ int main(void)
 			  pix_num=i;
 		  }
 	  }
-
+	  time4 = HAL_GetTick() - time0;
+	  time = time4;
 	  for(uint8_t i=0; i<PIX_NUM_AVG-1; i++) {
 		  pix_nums[i]=pix_nums[i+1];
 	  }
@@ -293,7 +302,6 @@ int main(void)
 	  for(int16_t i=PIX_NUM_AVG-1; i>PIX_NUM_AVG-1-meas_num; i--)
 		  pn+=pix_nums[i];
 	  meas.num_pix=pn/meas_num;
-
 	  if(max_val<5000)	//brak probki, bylo 4000
 	  {
 		  autoled_pend = 2;
@@ -412,6 +420,8 @@ int main(void)
 		  HAL_UART_Receive_IT(&huart1, uart_in, 21);
 	  }
 
+	  time5 = HAL_GetTick() - time0;
+	  time = time5;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

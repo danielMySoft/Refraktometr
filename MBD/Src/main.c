@@ -90,7 +90,7 @@
 #define STORAGE_PROHIBITED 0
 #define STORAGE_BY_KEYBOARD 1
 
-#define POMIAR_ARRAY_SIZE 10//50		//wielkosc bufora pomiarow do usredniania. 8 -> pomiary usrednione z 1 sek. 16 -> 2 sek itd
+#define POMIAR_ARRAY_SIZE 5//50		//wielkosc bufora pomiarow do usredniania. 8 -> pomiary usrednione z 1 sek. 16 -> 2 sek itd
 
 
 //POPRAWNE USTAWIENIA
@@ -1620,7 +1620,7 @@ void USER_UART6_IDLE_Callback(UART_HandleTypeDef *huart)		//CCD -> MBD
 
 		if (CCD_rxBuffer[44] == CalcChecksum(CCD_rxBuffer, 44))	//if CRC correct
 		{
-			if (TicksSinceLastRecordArrived < 15)	//if sample present
+			if (TicksSinceLastRecordArrived < 50)	//if sample present
 			{
 
 																										//sample detection:
@@ -2505,7 +2505,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim6)	//50Hz refresh rate
 
 
 	TicksSinceLastRecordArrived++;
-	if(TicksSinceLastRecordArrived > 15)
+	if(TicksSinceLastRecordArrived > 50)
 	{
 		memset(pomiarArray, 0, sizeof(pomiarArray));
 		packetCounter = 0;

@@ -160,7 +160,7 @@ hrtc                0x20              Src/main.o
 floatingTextDelay   0x1               Src/main.o
 htim6               0x40              Src/main.o
 yShift              0x1               Src/main.o
-pomiarArray         0xf0              Src/main.o
+pomiarArray         0x78              Src/main.o
 xShift              0x1               Src/main.o
 frame               0x7e              Src/main.o
 huart6              0x40              Src/main.o
@@ -5255,7 +5255,7 @@ LOAD c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide
  .igot.plt      0x0000000020000660        0x0 c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/thumb/v7e-m+fp/hard/crtbegin.o
                 0x0000000020000660                . = ALIGN (0x4)
 
-.bss            0x0000000020000660      0xd64 load address 0x00000000080140e4
+.bss            0x0000000020000660      0xcec load address 0x00000000080140e4
                 0x0000000020000660                _sbss = .
                 0x0000000020000660                __bss_start__ = _sbss
  *(.bss)
@@ -5289,7 +5289,7 @@ LOAD c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide
  COMMON         0x00000000200006c4       0x28 Src/EEPROM.o
                 0x00000000200006c4                settings
                 0x00000000200006d0                ArchiveEntry
- COMMON         0x00000000200006ec      0xcc8 Src/main.o
+ COMMON         0x00000000200006ec      0xc50 Src/main.o
                 0x00000000200006ec                hdma_usart2_rx
                 0x000000002000074c                pomiarTimer
                 0x0000000020000750                hdma_usart6_rx
@@ -5312,41 +5312,41 @@ LOAD c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide
                 0x000000002000110c                htim6
                 0x000000002000114c                yShift
                 0x0000000020001150                pomiarArray
-                0x0000000020001240                xShift
-                0x0000000020001244                frame
-                0x00000000200012c4                huart6
-                0x0000000020001304                hspi1
-                0x000000002000135c                ssStateChanged
-                0x0000000020001360                huart2
-                0x00000000200013a0                korekcja_pakiet
- COMMON         0x00000000200013b4        0x4 c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
-                0x00000000200013b4                errno
- COMMON         0x00000000200013b8        0x9 c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
-                0x00000000200013b8                __lock___atexit_recursive_mutex
-                0x00000000200013b9                __lock___arc4random_mutex
-                0x00000000200013ba                __lock___env_recursive_mutex
-                0x00000000200013bb                __lock___sinit_recursive_mutex
-                0x00000000200013bc                __lock___malloc_recursive_mutex
-                0x00000000200013bd                __lock___at_quick_exit_mutex
-                0x00000000200013be                __lock___dd_hash_mutex
-                0x00000000200013bf                __lock___tz_mutex
-                0x00000000200013c0                __lock___sfp_recursive_mutex
-                0x00000000200013c4                . = ALIGN (0x4)
- *fill*         0x00000000200013c1        0x3 
-                0x00000000200013c4                _ebss = .
-                0x00000000200013c4                __bss_end__ = _ebss
+                0x00000000200011c8                xShift
+                0x00000000200011cc                frame
+                0x000000002000124c                huart6
+                0x000000002000128c                hspi1
+                0x00000000200012e4                ssStateChanged
+                0x00000000200012e8                huart2
+                0x0000000020001328                korekcja_pakiet
+ COMMON         0x000000002000133c        0x4 c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-reent.o)
+                0x000000002000133c                errno
+ COMMON         0x0000000020001340        0x9 c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide.mcu.externaltools.gnu-tools-for-stm32.9-2020-q2-update.win32_1.5.0.202011040924/tools/bin/../lib/gcc/arm-none-eabi/9.3.1/../../../../arm-none-eabi/lib/thumb/v7e-m+fp/hard\libc_nano.a(lib_a-lock.o)
+                0x0000000020001340                __lock___atexit_recursive_mutex
+                0x0000000020001341                __lock___arc4random_mutex
+                0x0000000020001342                __lock___env_recursive_mutex
+                0x0000000020001343                __lock___sinit_recursive_mutex
+                0x0000000020001344                __lock___malloc_recursive_mutex
+                0x0000000020001345                __lock___at_quick_exit_mutex
+                0x0000000020001346                __lock___dd_hash_mutex
+                0x0000000020001347                __lock___tz_mutex
+                0x0000000020001348                __lock___sfp_recursive_mutex
+                0x000000002000134c                . = ALIGN (0x4)
+ *fill*         0x0000000020001349        0x3 
+                0x000000002000134c                _ebss = .
+                0x000000002000134c                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x00000000200013c4      0x604 load address 0x00000000080140e4
-                0x00000000200013c8                . = ALIGN (0x8)
- *fill*         0x00000000200013c4        0x4 
-                0x00000000200013c8                PROVIDE (end = .)
+                0x000000002000134c      0x604 load address 0x00000000080140e4
+                0x0000000020001350                . = ALIGN (0x8)
+ *fill*         0x000000002000134c        0x4 
+                0x0000000020001350                PROVIDE (end = .)
                 [!provide]                        PROVIDE (_end = .)
-                0x00000000200015c8                . = (. + _Min_Heap_Size)
- *fill*         0x00000000200013c8      0x200 
-                0x00000000200019c8                . = (. + _Min_Stack_Size)
- *fill*         0x00000000200015c8      0x400 
-                0x00000000200019c8                . = ALIGN (0x8)
+                0x0000000020001550                . = (. + _Min_Heap_Size)
+ *fill*         0x0000000020001350      0x200 
+                0x0000000020001950                . = (. + _Min_Stack_Size)
+ *fill*         0x0000000020001550      0x400 
+                0x0000000020001950                . = ALIGN (0x8)
 
 /DISCARD/
  libc.a(*)
@@ -5774,7 +5774,7 @@ LOAD c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide
  .debug_line    0x0000000000013f3b      0x867 Src/syscalls.o
  .debug_line    0x00000000000147a2      0x7b0 Src/system_stm32f4xx.o
 
-.debug_str      0x0000000000000000    0xd8801
+.debug_str      0x0000000000000000    0xd8800
  .debug_str     0x0000000000000000    0xcbdcb Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.o
                                       0xcc19c (size before relaxing)
  .debug_str     0x00000000000cbdcb      0x3e6 Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.o
@@ -5805,15 +5805,15 @@ LOAD c:/programy/st/stm32cubeide_1.6.0/stm32cubeide/plugins/com.st.stm32cube.ide
                                       0xcfded (size before relaxing)
  .debug_str     0x00000000000d466a      0x168 Src/kbd.o
                                       0xcbc04 (size before relaxing)
- .debug_str     0x00000000000d47d2     0x27b5 Src/main.o
-                                      0xd324c (size before relaxing)
- .debug_str     0x00000000000d6f87       0x25 Src/stm32f4xx_hal_msp.o
+ .debug_str     0x00000000000d47d2     0x27b4 Src/main.o
+                                      0xd324b (size before relaxing)
+ .debug_str     0x00000000000d6f86       0x25 Src/stm32f4xx_hal_msp.o
                                       0xccbda (size before relaxing)
- .debug_str     0x00000000000d6fac      0x17a Src/stm32f4xx_it.o
+ .debug_str     0x00000000000d6fab      0x17a Src/stm32f4xx_it.o
                                       0xcc3f9 (size before relaxing)
- .debug_str     0x00000000000d7126     0x1681 Src/syscalls.o
+ .debug_str     0x00000000000d7125     0x1681 Src/syscalls.o
                                        0x8ef7 (size before relaxing)
- .debug_str     0x00000000000d87a7       0x5a Src/system_stm32f4xx.o
+ .debug_str     0x00000000000d87a6       0x5a Src/system_stm32f4xx.o
                                       0xcb618 (size before relaxing)
 
 .comment        0x0000000000000000       0x53

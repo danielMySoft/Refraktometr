@@ -3,6 +3,11 @@
 
 #include "main.h"
 
+uint32_t time1;
+uint32_t time2;
+uint32_t time3;
+uint32_t time4;
+uint32_t time5;
 extern volatile uint8_t ccd_read_req;		//czy chcemy odczytac linijke z CCD?
 extern volatile uint16_t ccd_pix_num;		//numer odczytywanego piksela
 extern volatile uint8_t ccd_data_ready;		//czy dane z ccd sa gotowe (odczytane)?
