@@ -122,28 +122,6 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	}
 }
 
-void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
-{
-	//ccd[ccd_pix_num]=HAL_ADC_GetValue(&hadc2);
-//	ccd_pix_num++;
-//	if(ccd_pix_num>=3700){
-//		ccd_data_ready = 1;
-//		ccd_pix_num=0;
-//		ccd_read_req=0;
-//		HAL_TIM_PWM_Stop_IT(&htim1, TIM_CHANNEL_1);
-//		ccd_read_req=0;
-//	}
-	//HAL_ADC_Start(&hadc2);
-}
-void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
-{
-	//przerwanie do odczytu probki sygnalu z CCD, 500kHz
-	if(htim->Instance==TIM1)
-	{
-
-	}
-}
-
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
 	//jezeli przerwanie z UARTa do komunikacji z plytka komputera
@@ -236,7 +214,7 @@ int main(void)
 
   //autoLed();
   setLedCurrent(0.0019); //bylo 0.0012
-  autoLed();
+  //autoLed();
   /* USER CODE END 2 */
 
   /* Infinite loop */

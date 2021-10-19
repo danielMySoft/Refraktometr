@@ -14,11 +14,7 @@
       <ProjectName>REF-LAB-CCD_00</ProjectName>
       <ProjectNature>C</ProjectNature>
       <Secure/>
-      <filestoremove>
-        <file>
-          <name>Src\bdma.c</name>
-        </file>
-      </filestoremove>
+      <filestoremove/>
       <sourceEntriesToRemove>
         <sourceEntry/>
       </sourceEntriesToRemove>

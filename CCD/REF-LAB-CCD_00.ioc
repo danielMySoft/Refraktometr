@@ -24,7 +24,6 @@ DAC1.IPParameters=DAC_Trigger-DAC_OUT1,DAC_OutputBuffer-DAC_OUT1
 RCC.CPU2Freq_Value=200000000
 RCC.RTCFreq_Value=32000
 PA3.GPIOParameters=GPIO_Speed,GPIO_Label
-NVIC.TIM1_UP_IRQn=true\:0\:0\:false\:false\:true\:true\:true
 RCC.CpuClockFreq_Value=400000000
 RCC.VCO2OutputFreq_Value=800000000
 SH.ADCx_INP5.0=ADC1_INP5,IN5-Single-Ended
