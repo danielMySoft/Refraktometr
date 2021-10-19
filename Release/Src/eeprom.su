@@ -1,0 +1,6 @@
+eeprom.c:11:6:eepromWriteByte	32	static
+eeprom.c:25:9:eepromReadByte	24	static
+eeprom.c:38:6:eepromWriteFloat	32	static
+eeprom.c:51:7:eepromReadFloat	24	static
+eeprom.c:64:6:eepromWriteInt	16	static
+eeprom.c:77:10:eepromReadInt	16	static

@@ -1,0 +1,6 @@
+ccd_math.c:10:6:lowpass	16	static
+ccd_math.c:25:6:std_dev	48	static
+ccd_math.c:48:6:fir	24	static
+ccd_math.c:61:6:fir16	24	static
+ccd_math.c:74:10:findMax	12	static
+ccd_math.c:86:10:findMin	12	static

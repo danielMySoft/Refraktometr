@@ -62,15 +62,15 @@ void autoLed(void)
 		HAL_Delay(10);	//bylo 25
 		getCCD();
 
-		fir16(ccd, ccd_fir, 3);
-		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
-		fir16(ccd, ccd_fir, 5);
-		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
-		fir16(ccd, ccd_fir, 7);
-		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
-		fir16(ccd, ccd_fir, 9);
-		memcpy(ccd, ccd_fir, sizeof(ccd_fir));
-		contrast=getContrast(ccd_fir);
+		fir16(ccd, ccd_fir16, 3);
+		memcpy(ccd, ccd_fir16, sizeof(ccd_fir16));
+		fir16(ccd, ccd_fir16, 5);
+		memcpy(ccd, ccd_fir16, sizeof(ccd_fir16));
+		fir16(ccd, ccd_fir16, 7);
+		memcpy(ccd, ccd_fir16, sizeof(ccd_fir16));
+		fir16(ccd, ccd_fir16, 9);
+		memcpy(ccd, ccd_fir16, sizeof(ccd_fir16));
+		contrast=getContrast(ccd_fir16);
 		if(i == 30){
 			volatile uint8_t aaa = 0;
 			aaa = 5;

@@ -1,0 +1,9 @@
+main.c:133:6:HAL_TIM_PeriodElapsedCallback	8	static,ignoring_inline_asm
+main.c:166:6:HAL_TIM_OC_DelayElapsedCallback	8	static
+main.c:177:6:HAL_UART_RxCpltCallback	0	static
+main.c:186:6:getCCD	0	static
+main.c:193:6:saveCalData	8	static
+main.c:202:6:readCalData	8	static
+main.c:449:6:SystemClock_Config	336	static
+main.c:216:5:main	128	static
+main.c:534:6:Error_Handler	0	static

@@ -1,0 +1,5 @@
+ds.c:12:9:DS_CheckCksum	40	static
+ds.c:37:6:DS_Reset	16	static
+ds.c:46:6:DS_Write	24	static
+ds.c:61:6:DS_Read	96	static
+ds.c:75:7:DS_GetTemp	88	static

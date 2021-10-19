@@ -112,24 +112,6 @@ uint16_t findMin(uint32_t* input, uint16_t size){
 }
 
 
-void saveCalData(void)
-{
-	eepromWriteInt(EEPROM_BASE_ADDR  +0, cal_data.serial);
-	eepromWriteFloat(EEPROM_BASE_ADDR+2, cal_data.f);
-	eepromWriteFloat(EEPROM_BASE_ADDR+6, cal_data.D);
-	eepromWriteFloat(EEPROM_BASE_ADDR+10, cal_data.temp_corr);
-	eepromWriteFloat(EEPROM_BASE_ADDR+14, cal_data.x_corr);
-}
-
-void readCalData(void)
-{
-	cal_data.serial=eepromReadInt(EEPROM_BASE_ADDR  +0);
-	cal_data.f=eepromReadFloat(EEPROM_BASE_ADDR+2);
-	cal_data.D=eepromReadFloat(EEPROM_BASE_ADDR+6);
-	cal_data.temp_corr=eepromReadFloat(EEPROM_BASE_ADDR+10);
-	cal_data.x_corr=eepromReadFloat(EEPROM_BASE_ADDR+14);
-}
-
 uint16_t getContrast(uint16_t *inp)
 {
 	uint16_t min=65535, max=0;

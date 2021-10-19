@@ -1,0 +1,4 @@
+led.c:19:6:setLedCurrent	8	static
+led.c:32:7:getLedCurrent	8	static
+led.c:42:10:getContrast	8	static
+led.c:57:6:autoLed	7456	static
