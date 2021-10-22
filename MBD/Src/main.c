@@ -576,7 +576,7 @@ void drawFrame(void)
 			if (settings.thermalCompensation == OFF) sprintf(frame.firstLine, Main_Screen[3][settings.language]);
 			else sprintf(frame.firstLine, Main_Screen[0][settings.language]);
 			OLED_PutStr(40, 1, frame.firstLine, 0, settings.contrast);
-			OLED_PutStr(3, 24, frame.secondLine, 1, settings.contrast);
+			OLED_PutStr(6, 24, frame.secondLine, 1, settings.contrast);
 			sprintf(frame.bottomLine,"%02u-%02u-%u   %02u:%02u:%02u", gDate.Date, gDate.Month, gDate.Year+2000, gTime.Hours,gTime.Minutes,gTime.Seconds);
 			OLED_PutStr(0, 56, frame.bottomLine, 0, settings.contrast);
 			break;
@@ -1876,7 +1876,7 @@ int main(void)
 				 {
 					 //char a[10];
 					 sprintf(kreski,"%sIII",kreski);
-					 sprintf(frame.secondLine, " %s", kreski);
+					 sprintf(frame.secondLine, "%s", kreski);
 					 frame.type = FRAME_1_BIG_LINE;
 				 }
 			 }

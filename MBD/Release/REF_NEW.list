@@ -16981,14 +16981,14 @@ void drawFrame(void)
  8006cd6:	2101      	movs	r1, #1
  8006cd8:	2028      	movs	r0, #40	; 0x28
  8006cda:	f7ff fadb 	bl	8006294 <OLED_PutStr>
-			OLED_PutStr(3, 24, frame.secondLine, 1, settings.contrast);
+			OLED_PutStr(6, 24, frame.secondLine, 1, settings.contrast);
  8006cde:	4b7f      	ldr	r3, [pc, #508]	; (8006edc <drawFrame+0x290>)
  8006ce0:	795b      	ldrb	r3, [r3, #5]
  8006ce2:	9300      	str	r3, [sp, #0]
  8006ce4:	2301      	movs	r3, #1
  8006ce6:	4a80      	ldr	r2, [pc, #512]	; (8006ee8 <drawFrame+0x29c>)
  8006ce8:	2118      	movs	r1, #24
- 8006cea:	2003      	movs	r0, #3
+ 8006cea:	2006      	movs	r0, #6
  8006cec:	f7ff fad2 	bl	8006294 <OLED_PutStr>
 			sprintf(frame.bottomLine,"%02u-%02u-%u   %02u:%02u:%02u", gDate.Date, gDate.Month, gDate.Year+2000, gTime.Hours,gTime.Minutes,gTime.Seconds);
  8006cf0:	4b7e      	ldr	r3, [pc, #504]	; (8006eec <drawFrame+0x2a0>)
@@ -23103,7 +23103,7 @@ int main(void)
  8009cc8:	4947      	ldr	r1, [pc, #284]	; (8009de8 <main+0x38c>)
  8009cca:	4618      	mov	r0, r3
  8009ccc:	f002 f866 	bl	800bd9c <siprintf>
-					 sprintf(frame.secondLine, " %s", kreski);
+					 sprintf(frame.secondLine, "%s", kreski);
  8009cd0:	1d3b      	adds	r3, r7, #4
  8009cd2:	461a      	mov	r2, r3
  8009cd4:	4945      	ldr	r1, [pc, #276]	; (8009dec <main+0x390>)

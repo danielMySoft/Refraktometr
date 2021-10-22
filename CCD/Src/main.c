@@ -224,6 +224,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  if(autoled_pend!=0){
+		  autoLed();
+		  autoled_pend = 0;
+		  HAL_Delay(50);
+	  }
 	  uint32_t time;
 	  uint32_t time0 = HAL_GetTick();
 	  //czyszczenie bufora i akwizycja danych
@@ -282,7 +287,7 @@ int main(void)
 	  for(int16_t i=PIX_NUM_AVG-1; i>PIX_NUM_AVG-1-meas_num; i--)
 		  pn+=pix_nums[i];
 	  meas.num_pix=pn/meas_num;
-	  if(max_val<1000)	//brak probki, bylo 4000
+	  if(max_val<800)	//brak probki, bylo 4000
 	  {
 		  autoled_pend = 2;
 		  meas_num=0;
@@ -300,11 +305,7 @@ int main(void)
 	  {
 		  //gdy jest obecna probka
 		  //licz wszystko
-		  if(autoled_pend!=0){
-			  autoLed();
-			  autoled_pend = 0;
-			  HAL_Delay(50);
-		  }
+
 		  float ns=1.75996+((13.6e-6)*(meas.temp-20.0));// n szafiru
 		  float xp=-(REAL_PIX_NUM/2.0-meas.num_pix+cal_data.x_corr)*0.008;
 		  xp+=cal_data.D*pow(xp, 3.0);
