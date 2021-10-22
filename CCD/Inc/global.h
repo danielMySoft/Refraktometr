@@ -15,7 +15,7 @@ extern volatile uint8_t ccd_data_ready;		//czy dane z ccd sa gotowe (odczytane)?
 uint16_t ccd[NUM_PIX];					//miejsce na surowe probki odczytane z CCD
 uint16_t ccd_fir16[NUM_PIX];
 uint32_t ccd_avg[NUM_PIX];				//miejsce na usrednione probki z CCD
-uint32_t ccd_fir[NUM_PIX];				//miejsce na odfiltrowane przebiegi z CCD
+uint16_t ccd_fir[NUM_PIX];				//miejsce na odfiltrowane przebiegi z CCD
 
 extern volatile uint16_t meas_num;					//ile pomiarow mamy?
 extern volatile uint8_t tim5_flag;

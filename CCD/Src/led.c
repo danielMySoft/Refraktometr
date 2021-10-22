@@ -18,7 +18,6 @@ void getCCD(void)
 {
 	for(uint16_t i=0; i<NUM_PIX; i++)
 		ccd[i] = 0;
-	//memset((uint8_t*)ccd, 0, 2*NUM_PIX);
 	ccd_data_ready = 0;
 	ccd_read_req=1;
 	while(ccd[NUM_PIX-1] == 0){
@@ -56,9 +55,9 @@ void autoLed(void)
 {
 	volatile uint16_t c_max=0;
 	float curr_max=0.0;
-	for(uint8_t i=0; i<50; i++) //bylo 0..200
+	for(uint8_t i=20; i<100; i++) //bylo 0..200
 	{
-		setLedCurrent((float)i/10000.0);	//40000
+		setLedCurrent((float)i/20000.0);	//40000
 		HAL_Delay(10);	//bylo 25
 		getCCD();
 
@@ -79,13 +78,14 @@ void autoLed(void)
 		if(contrast>c_max)
 		{
 			c_max=contrast;
-			curr_max=(float)i/10000.0;
-			if(contrast>21850)
+			curr_max=(float)i/20000.0;
+			//if(contrast>21850)
+			if(contrast>19560)
 				break;
 		}
 	}
 
-	setLedCurrent(curr_max*0.8);	//powinno byc *0.8, ale nikt nie wie czemu to nie dziala
+	setLedCurrent(curr_max);	//powinno byc *0.8, ale nikt nie wie czemu to nie dziala
 
 	//memset((uint8_t*)ccd, 0, NUM_PIX*2);
 	ccd_read_req=1;

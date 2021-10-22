@@ -493,11 +493,13 @@
     	
     <storageModule moduleId="refreshScope" versionNumber="2">
         		
-        <configuration artifactName="${ProjName}" configurationName="Debug">
+        <configuration configurationName="Debug">
             			
-            <resource resourceType="PROJECT" workspacePath="REF-LAB-CCD_00"/>
+            <resource resourceType="PROJECT" workspacePath="/REF-LAB-CCD_00"/>
             		
         </configuration>
+        		
+        <configuration configurationName="Release"/>
         	
     </storageModule>
     	

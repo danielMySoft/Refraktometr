@@ -41,6 +41,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "adc.h"
+#include "bdma.h"
 #include "dac.h"
 #include "dma.h"
 #include "spi.h"
@@ -108,7 +109,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			TIM1->CNT=0;
 			ccd_pix_num=0;
 			ccd_data_ready=0;
-			HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ccd, 3700);
+			HAL_ADC_Start_DMA(&hadc2, (uint32_t*)ccd, NUM_PIX);
 			HAL_TIM_Base_Start(&htim1);
 		}
 	}
@@ -178,6 +179,7 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_BDMA_Init();
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_SPI4_Init();
@@ -209,7 +211,7 @@ int main(void)
   HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
   HAL_TIM_Base_Start_IT(&htim2);
 
-  HAL_Delay(2000);
+  HAL_Delay(1000);
   HAL_UART_Receive_IT(&huart1, uart_in, 21);
 
   //autoLed();
@@ -224,44 +226,43 @@ int main(void)
 	  uint32_t time;
 	  uint32_t time0 = HAL_GetTick();
 	  //czyszczenie bufora i akwizycja danych
-	  for(uint16_t i=0; i<NUM_PIX; i++)
-		  ccd_avg[i]=0;
-
-	  uint8_t cnt = 0;
+//	  for(uint16_t i=0; i<NUM_PIX; i++)
+//		  ccd_avg[i]=0;
 	  for(uint8_t i=0; i<AVG_LINES; i++)  {
 		  getCCD();
-		  if(ccd[10] < 45000)
-			  cnt+=1;
-		  for(uint16_t j=0; j<NUM_PIX; j++)
-			  ccd_avg[j]+=ccd[j];
+		  for(uint16_t j=0; j<NUM_PIX; j++){
+			  if(i==0)
+				  ccd_avg[j]=ccd[j];
+			  else
+				  ccd_avg[j]+=ccd[j];
+		  }
 	  }
 
 	  time1 = HAL_GetTick() - time0;
 	  time = time1;
 
-	  test1 = ccd_avg[10];
 	  for(uint16_t j=0; j<NUM_PIX; j++)
-		  ccd_avg[j] = ccd_avg[j]/AVG_LINES;
+		  ccd[j] = ccd_avg[j]/AVG_LINES;
 
 	  meas.temp=DS_GetTemp()+cal_data.temp_corr;
 	  time2 = HAL_GetTick() - time0;
 	  time = time2;
 	  //dalsza matematyka
 	  //lowpass(ccd_avg, 3650, AVG_FILTER);
-	  fir(ccd_avg, ccd_fir, 5);
-	  fir(ccd_fir, ccd_avg, 7);
-	  fir(ccd_avg, ccd_fir, 9);
-	  fir(ccd_fir, ccd_avg, 11);
+	  fir16(ccd, ccd_fir, 5);
+	  fir16(ccd_fir, ccd, 7);
+	  fir16(ccd, ccd_fir, 9);
+	  fir16(ccd_fir, ccd, 11);
 	  time3 = HAL_GetTick() - time0;
 	  time = time3;
-	  std_dev(ccd_avg, STD_DEV_LEN);
+	  std_dev(ccd, STD_DEV_LEN);
 
 	  //szukanie wartosci maksymalnej odchylenia standardowego
 	  //przy okazji sprawdzenie, dla jakiego numeru piksela wystepuje
 	  max_val=0;
 	  for(uint16_t i=100; i<3600; i++) {
-		  if(ccd_avg[i]>max_val) {
-			  max_val=ccd_avg[i];
+		  if(ccd[i]>max_val) {
+			  max_val=ccd[i];
 			  pix_num=i;
 		  }
 	  }
@@ -280,7 +281,7 @@ int main(void)
 	  for(int16_t i=PIX_NUM_AVG-1; i>PIX_NUM_AVG-1-meas_num; i--)
 		  pn+=pix_nums[i];
 	  meas.num_pix=pn/meas_num;
-	  if(max_val<5000)	//brak probki, bylo 4000
+	  if(max_val<1000)	//brak probki, bylo 4000
 	  {
 		  autoled_pend = 2;
 		  meas_num=0;
@@ -301,6 +302,7 @@ int main(void)
 		  if(autoled_pend!=0){
 			  autoLed();
 			  autoled_pend = 0;
+			  HAL_Delay(1000);
 		  }
 		  float ns=1.75996+((13.6e-6)*(meas.temp-20.0));// n szafiru
 		  float xp=-(REAL_PIX_NUM/2.0-meas.num_pix+cal_data.x_corr)*0.008;

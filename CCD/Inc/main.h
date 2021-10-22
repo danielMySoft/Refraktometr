@@ -66,9 +66,9 @@ extern "C" {
 #define NUM_PIX				3700					//ile wszystkich pikseli z CCD idzie, razem z tymi "skrajnymi"
 #define REAL_PIX_NUM		3648					//ile prawdziwych pikseli obrazu jest w CCD
 #define EEPROM_BASE_ADDR	2137					//adres bazowy danych przechowywanych w eepromie
-#define	AVG_LINES			10						//usrednianie tylu linijek CCD
+#define	AVG_LINES			3						//usrednianie tylu linijek CCD
 #define	AVG_FILTER			8						//parametr filtra wygladzajacego
-#define	STD_DEV_LEN			64						//z ilu probek liczymy odchylenie standardowe
+#define	STD_DEV_LEN			12						//z ilu probek liczymy odchylenie standardowe
 #define PIX_NUM_AVG			60						//z ilu wartosci pix_num liczymy srednia
 /* USER CODE END EC */
 

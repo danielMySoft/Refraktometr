@@ -23,7 +23,7 @@ void lowpass(uint32_t *in, const uint16_t siz, const uint8_t len)
 	}
 }
 
-void std_dev(uint32_t *arr, const uint16_t len) //std_dev dla serii, nadpisuje
+void std_dev(uint16_t *arr, const uint16_t len) //std_dev dla serii, nadpisuje
 {
 	uint32_t sum=0;
 
@@ -42,7 +42,7 @@ void std_dev(uint32_t *arr, const uint16_t len) //std_dev dla serii, nadpisuje
 			sum+=(arr[i]-avg)*(arr[i]-avg);
 		}
 
-		arr[j]=(uint32_t)sqrt(sum);
+		arr[j]=(uint16_t)sqrt(sum);
 	}
 }
 
@@ -78,12 +78,27 @@ void fir16(uint16_t *inp, uint16_t *outp, const uint8_t len)
 {
 	memset((uint8_t*)outp, 0, 2*NUM_PIX);
 
-	for(uint16_t i=len-1; i<REAL_PIX_NUM; i++)
+	uint32_t tmp=0;
+	for(uint8_t i=0; i<(len-1)/2; i++){
+		tmp = 0;
+		for(uint8_t j=0; j<=i+(len-1)/2; j++)
+			tmp += inp[j];
+		outp[i] = tmp/(i+1+(len-1)/2);
+	}
+
+	for(uint16_t i=(len-1)/2; i<=NUM_PIX-1-(len-1)/2; i++)
 	{
-		uint32_t tmp=0;
-		for(uint8_t j=0; j<len; j++)
-			tmp+=inp[i-j];
+		tmp = 0;
+		for(int8_t j=-(len-1)/2; j<=(len-1)/2; j++)
+			tmp+=inp[i+j];
 		outp[i]=tmp/len;
+	}
+
+	for(uint16_t i=NUM_PIX-(len-1)/2; i<NUM_PIX; i++){
+		tmp = 0;
+		for(uint16_t j=i-(len-1)/2; j<NUM_PIX; j++)
+			tmp += inp[j];
+		outp[i] = tmp/(NUM_PIX-i+(len-1)/2);
 	}
 }
 
@@ -116,7 +131,7 @@ uint16_t getContrast(uint16_t *inp)
 {
 	uint16_t min=65535, max=0;
 
-	for(uint16_t i=150; i<3550; i++)
+	for(uint16_t i=100; i<3500; i++)
 	{
 		if(inp[i]>max)
 			max=inp[i];
