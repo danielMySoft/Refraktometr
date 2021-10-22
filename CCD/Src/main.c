@@ -114,12 +114,13 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 		}
 	}
 	if(htim->Instance == TIM5){
-//		if(tim5_first_flag)
-//			tim5_first_flag = 0;
-//		else{
-//			autoled_pend = 1;
-//			HAL_TIM_Base_Stop_IT(&htim5);
-//		}
+		static uint8_t tim5_first_flag = 1;
+		if(!tim5_first_flag){
+			autoled_pend = 1;
+		}
+		else{
+			tim5_first_flag = 0;
+		}
 	}
 }
 
@@ -216,7 +217,7 @@ int main(void)
 
   //autoLed();
   setLedCurrent(0.0019); //bylo 0.0012
-  //autoLed();
+  HAL_TIM_Base_Start_IT(&htim5);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -302,7 +303,7 @@ int main(void)
 		  if(autoled_pend!=0){
 			  autoLed();
 			  autoled_pend = 0;
-			  HAL_Delay(1000);
+			  HAL_Delay(50);
 		  }
 		  float ns=1.75996+((13.6e-6)*(meas.temp-20.0));// n szafiru
 		  float xp=-(REAL_PIX_NUM/2.0-meas.num_pix+cal_data.x_corr)*0.008;

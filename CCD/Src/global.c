@@ -6,7 +6,6 @@ volatile uint8_t ccd_data_ready			=0;		//czy dane z ccd sa gotowe (odczytane)?
 
 volatile uint16_t meas_num				= 0;	//ile pomiarow mamy?
 volatile uint8_t tim5_flag 				= 0;
-volatile uint8_t tim5_first_flag 		= 0;
 
 volatile uint8_t test					=0;		//test
 float f_test								=0.0;	//test

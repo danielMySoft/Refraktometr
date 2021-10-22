@@ -55,10 +55,10 @@ void autoLed(void)
 {
 	volatile uint16_t c_max=0;
 	float curr_max=0.0;
-	for(uint8_t i=20; i<100; i++) //bylo 0..200
+	for(uint8_t i=10; i<80; i++) //bylo 0..200
 	{
 		setLedCurrent((float)i/20000.0);	//40000
-		HAL_Delay(10);	//bylo 25
+		HAL_Delay(1);	//bylo 25
 		getCCD();
 
 		fir16(ccd, ccd_fir16, 3);
@@ -67,19 +67,12 @@ void autoLed(void)
 		memcpy(ccd, ccd_fir16, sizeof(ccd_fir16));
 		fir16(ccd, ccd_fir16, 7);
 		memcpy(ccd, ccd_fir16, sizeof(ccd_fir16));
-		fir16(ccd, ccd_fir16, 9);
-		memcpy(ccd, ccd_fir16, sizeof(ccd_fir16));
 		contrast=getContrast(ccd_fir16);
-		if(i == 30){
-			volatile uint8_t aaa = 0;
-			aaa = 5;
-			pix_num = aaa;
-		}
+
 		if(contrast>c_max)
 		{
 			c_max=contrast;
 			curr_max=(float)i/20000.0;
-			//if(contrast>21850)
 			if(contrast>19560)
 				break;
 		}

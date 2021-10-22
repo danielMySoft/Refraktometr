@@ -19,7 +19,6 @@ uint16_t ccd_fir[NUM_PIX];				//miejsce na odfiltrowane przebiegi z CCD
 
 extern volatile uint16_t meas_num;					//ile pomiarow mamy?
 extern volatile uint8_t tim5_flag;
-extern volatile uint8_t tim5_first_flag;
 
 extern volatile uint8_t test;		//test
 extern float f_test;	//test
