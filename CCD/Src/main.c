@@ -229,11 +229,8 @@ int main(void)
 		  autoled_pend = 0;
 		  HAL_Delay(50);
 	  }
-	  uint32_t time;
-	  uint32_t time0 = HAL_GetTick();
+
 	  //czyszczenie bufora i akwizycja danych
-//	  for(uint16_t i=0; i<NUM_PIX; i++)
-//		  ccd_avg[i]=0;
 	  for(uint8_t i=0; i<AVG_LINES; i++)  {
 		  getCCD();
 		  for(uint16_t j=0; j<NUM_PIX; j++){
@@ -244,23 +241,14 @@ int main(void)
 		  }
 	  }
 
-	  time1 = HAL_GetTick() - time0;
-	  time = time1;
-
 	  for(uint16_t j=0; j<NUM_PIX; j++)
 		  ccd[j] = ccd_avg[j]/AVG_LINES;
 
-	  meas.temp=DS_GetTemp()+cal_data.temp_corr;
-	  time2 = HAL_GetTick() - time0;
-	  time = time2;
 	  //dalsza matematyka
-	  //lowpass(ccd_avg, 3650, AVG_FILTER);
 	  fir16(ccd, ccd_fir, 5);
 	  fir16(ccd_fir, ccd, 7);
 	  fir16(ccd, ccd_fir, 9);
 	  fir16(ccd_fir, ccd, 11);
-	  time3 = HAL_GetTick() - time0;
-	  time = time3;
 	  std_dev(ccd, STD_DEV_LEN);
 
 	  //szukanie wartosci maksymalnej odchylenia standardowego
@@ -272,32 +260,35 @@ int main(void)
 			  pix_num=i;
 		  }
 	  }
-	  time4 = HAL_GetTick() - time0;
-	  time = time4;
+
 	  for(uint8_t i=0; i<PIX_NUM_AVG-1; i++) {
 		  pix_nums[i]=pix_nums[i+1];
+		  temperature[i] = temperature[i+1];
 	  }
 
+	  temperature[PIX_NUM_AVG-1] = DS_GetTemp()+cal_data.temp_corr;
 	  pix_nums[PIX_NUM_AVG-1]=pix_num;
 
 	  if(meas_num<PIX_NUM_AVG)
 		  meas_num++;
 
 	  float pn=0.0;
-	  for(int16_t i=PIX_NUM_AVG-1; i>PIX_NUM_AVG-1-meas_num; i--)
+	  float temp=0.0;
+	  for(int16_t i=PIX_NUM_AVG-1; i>PIX_NUM_AVG-1-meas_num; i--){
 		  pn+=pix_nums[i];
+		  temp+=temperature[i];
+	  }
+
 	  meas.num_pix=pn/meas_num;
+	  meas.temp = temp/meas_num;
+
 	  if(max_val<800)	//brak probki, bylo 4000
 	  {
 		  autoled_pend = 2;
 		  meas_num=0;
 		  for(uint8_t i=0; i<PIX_NUM_AVG-1; i++)
 			  pix_nums[i]=0;
-		  //HAL_Delay(1500);
 		  meas.nc=-1.0;
-		  //autoLed();
-		  //setLedCurrent(0.0019);
-		  //memset(uart_in, 0, 25);
 		  HAL_UART_AbortReceive_IT(&huart1);
 		  HAL_UART_Receive_IT(&huart1, uart_in, 21);
 	  }
@@ -305,7 +296,6 @@ int main(void)
 	  {
 		  //gdy jest obecna probka
 		  //licz wszystko
-
 		  float ns=1.75996+((13.6e-6)*(meas.temp-20.0));// n szafiru
 		  float xp=-(REAL_PIX_NUM/2.0-meas.num_pix+cal_data.x_corr)*0.008;
 		  xp+=cal_data.D*pow(xp, 3.0);
@@ -401,9 +391,6 @@ int main(void)
 		  cal_data_save_pending=0;
 		  HAL_UART_Receive_IT(&huart1, uart_in, 21);
 	  }
-
-	  time5 = HAL_GetTick() - time0;
-	  time = time5;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
