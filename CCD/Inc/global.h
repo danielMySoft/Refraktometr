@@ -3,11 +3,6 @@
 
 #include "main.h"
 
-uint32_t time1;
-uint32_t time2;
-uint32_t time3;
-uint32_t time4;
-uint32_t time5;
 extern volatile uint8_t ccd_read_req;		//czy chcemy odczytac linijke z CCD?
 extern volatile uint16_t ccd_pix_num;		//numer odczytywanego piksela
 extern volatile uint8_t ccd_data_ready;		//czy dane z ccd sa gotowe (odczytane)?
@@ -36,6 +31,7 @@ extern uint8_t autoled_pend;		//czy trzeba robic autoled?
 extern uint16_t pix_num;		//obliczony numer piksela, do przeliczen na brixy
 extern uint32_t max_val;		//wartosc odchylenia standardowego dla piksela pix_num (czyli maksymalna globalnie)
 uint32_t pix_nums[PIX_NUM_AVG];					//ostatnie kilka wartosci pix_num
+float temperature[PIX_NUM_AVG];
 uint32_t test1;
 
 struct calib
